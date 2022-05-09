@@ -2,7 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 require('dotenv').config();
-const { MongoClient, ServerApiVersion } = require('mongodb');
+const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const port = process.env.PORT || 5000;
 
 // middleware
@@ -20,13 +20,35 @@ async function run(){
         const electronicsCollection = client.db('electronics').collection('items');
 
         app.get('/items', async(req, res)=>{
-            const query = {};
-            
+            const query = {};            
             const cursor = electronicsCollection.find(query);
             const result = await cursor.toArray();
             res.send(result);
+        });
 
+        // --------------update item----------
+        app.get('/items/:id' , async(req,res)=>{
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const result = await electronicsCollection.findOne(query);
+            res.send(result);
+        });
+
+        app.put('/items/:id',async(req,res)=>{
+            const id = req.params.id;
+            const updateItem = req.body;
+            
+            const filter = {_id:ObjectId(id)};
+            const options = { upsert: true };
+            const updateQuantity = {
+                $set:{
+                    quantity:updateItem.quantity
+                }
+            };
+            const result = await electronicsCollection.updateOne(filter,updateQuantity,options);
+            res.send(result);
         })
+        
 
     }
     finally{
