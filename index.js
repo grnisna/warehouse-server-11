@@ -60,6 +60,14 @@ async function run(){
             const addItem = req.body;
             const result = await electronicsCollection.insertOne(addItem);
             res.send(result);
+        });
+
+        //--------------------delete item---------------
+        app.delete('/items/:id',async(req, res)=>{
+            const id = req.params.id;
+            const query = {_id:ObjectId(id)};
+            const result = await electronicsCollection.deleteOne(query);
+            res.send(result);
         })
         
 
