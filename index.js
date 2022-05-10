@@ -47,6 +47,19 @@ async function run(){
             };
             const result = await electronicsCollection.updateOne(filter,updateQuantity,options);
             res.send(result);
+        });
+        // --------------------------add new item----------------
+        app.get('/manage', async(req,res)=>{
+            const query = {};
+            const cursor = electronicsCollection.find(query);
+            const result = await cursor.toArray();
+            res.send(result);
+        });
+
+        app.post('/manage',async(req, res)=>{
+            const addItem = req.body;
+            const result = await electronicsCollection.insertOne(addItem);
+            res.send(result);
         })
         
 
