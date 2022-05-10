@@ -22,9 +22,10 @@ function varifyToken(req, res, next) {
         if (err) {
             return res.status(403).send({ message: 'Forbidden' });
         }
-
-        req.decoded = decoded;
-        next();
+        else {
+            req.decoded = decoded;
+            next();
+        }
     })
 
 
@@ -85,8 +86,8 @@ async function run() {
                 const result = await cursor.toArray();
                 res.send(result);
             }
-            else{
-                res.status(403).send({message:'Forbidden'});
+            else {
+                res.status(403).send({ message: 'Forbidden' });
             }
         });
 
