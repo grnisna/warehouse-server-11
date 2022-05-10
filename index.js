@@ -14,6 +14,7 @@ app.use(express.json());
 //---------varify token --------
 function varifyToken(req, res, next) {
     const getToken = req.headers.authorization;
+    console.log(getToken);
     if (!getToken) {
         return res.status(401).send({ message: 'UnAuthorized' });
     }
@@ -27,9 +28,12 @@ function varifyToken(req, res, next) {
             next();
         }
     })
-
-
 }
+// function varifyToken(req, res, next) {
+//     const getToken = req.get('authorization');
+//     console.log('gettoken',getToken);
+//   next();
+// }
 // --------------connet to mongoDB
 
 const uri = `mongodb+srv://${process.env.DB_USER}:${process.env.DB_PASSWORD}@cluster0.fenty.mongodb.net/myFirstDatabase?retryWrites=true&w=majority`;
