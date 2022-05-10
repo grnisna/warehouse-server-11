@@ -50,7 +50,9 @@ async function run(){
         });
         // --------------------------add new item----------------
         app.get('/manage', async(req,res)=>{
-            const query = {};
+            const email = req.query.email;
+            console.log(email);
+            const query = {email:email};
             const cursor = electronicsCollection.find(query);
             const result = await cursor.toArray();
             res.send(result);
